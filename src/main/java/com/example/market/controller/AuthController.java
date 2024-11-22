@@ -2,6 +2,8 @@ package com.example.market.controller;
 
 import com.example.market.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -42,4 +44,28 @@ public class AuthController {
             return "Invalid verification code.";
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String password = request.get("password");
+
+        // Validate input
+        if (username == null || username.isEmpty()) {
+            return ResponseEntity.badRequest().body("Username is required.");
+        }
+        if (password == null || password.isEmpty()) {
+            return ResponseEntity.badRequest().body("Password is required.");
+        }
+
+        try {
+            userService.authenticate(username, password);
+            // Authentication successful
+            return ResponseEntity.ok("Login successful!");
+        } catch (RuntimeException ex) {
+            // Handle specific exceptions thrown by `authenticate`
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+        }
+    }
+
 }

@@ -23,7 +23,7 @@ public class UserService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public User registerUser(String username, String password, String email, String phone) {
+    public void registerUser(String username, String password, String email, String phone) {
         // Check username uniqueness
         if (userRepository.findByUsername(username).isPresent()) {
             throw new RuntimeException("Username is already taken");
@@ -45,8 +45,6 @@ public class UserService {
         if (email != null) {
             sendVerificationEmail(user);
         }
-
-        return user;
     }
 
     public void sendVerificationEmail(User user) {
@@ -73,4 +71,26 @@ public class UserService {
         }
         return false;
     }
+
+    public void authenticate(String username, String password) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        // Check if the username exists
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("Invalid username. User does not exist.");
+        }
+
+        User user = optionalUser.get();
+
+        // Compare passwords
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Invalid password. Please try again.");
+        }
+
+        // Check if the account is verified
+        if (!user.isVerified()) {
+            throw new RuntimeException("Account is not verified. Please verify your email.");
+        }
+    }
+
 }
