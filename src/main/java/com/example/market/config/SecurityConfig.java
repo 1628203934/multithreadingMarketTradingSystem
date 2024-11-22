@@ -23,6 +23,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll() // Allow all requests
                 )
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.sameOrigin()) // Allow frames for H2 Console
+                )
                 .httpBasic(AbstractHttpConfigurer::disable); // Disable HTTP Basic authentication
 
         return http.build();

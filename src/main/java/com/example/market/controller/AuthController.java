@@ -20,6 +20,16 @@ public class AuthController {
         String email = request.get("email");
         String phone = request.get("phone");
 
+        if (username == null || username.isEmpty()) {
+            return "Username is required.";
+        }
+        if (password == null || password.isEmpty()) {
+            return "Password is required.";
+        }
+        if (email == null || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            return "Valid email is required.";
+        }
+
         userService.registerUser(username, password, email, phone);
         return "Registration successful. Please check your email for verification.";
     }

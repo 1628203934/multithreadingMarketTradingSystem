@@ -34,6 +34,3 @@ build/
 
 ### application.properties ###
 src/main/resources/application.properties
-
-# Ignore MailConfig.java
-src/main/java/com/example/market/config/MailConfig.java
