@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +25,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll() // Allow all requests
                 )
                 .headers(headers -> headers
-                        .frameOptions(frame -> frame.sameOrigin()) // Allow frames for H2 Console
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin) // Allow frames for H2 Console
                 )
                 .httpBasic(AbstractHttpConfigurer::disable); // Disable HTTP Basic authentication
 

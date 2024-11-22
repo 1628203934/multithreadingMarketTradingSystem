@@ -26,7 +26,7 @@ public class AuthController {
         if (password == null || password.isEmpty()) {
             return "Password is required.";
         }
-        if (email == null || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        if (email == null || !email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
             return "Valid email is required.";
         }
 
